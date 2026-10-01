@@ -1,0 +1,567 @@
+```
+;;;==============
+;;;  JazzScheme
+;;;==============
+;;;
+;;;; Module
+;;;
+
+
+(module jazz.sample.module jazz
+
+
+(import (jazz.component)
+        (jazz.foreign)
+        (jazz.markup)
+        (jazz.presence)
+        (jazz.presence.syntax (phase syntax))
+        (jazz.sample.mod)
+        (jazz.syntax (phase syntax)))
+
+
+;;;
+;;;; Declare
+;;;
+
+
+(declare (standard-bindings)
+         (extended-bindings))
+
+
+(proclaim (warn optimizations))
+
+
+;;;
+;;;; Cond-Expand
+;;;
+
+
+(cond-expand
+  (gambit
+    (define (gamb)
+      x))
+  (chicken
+    (define (chic)
+      x))
+  (else
+    (define (sche)
+      x)))
+
+
+;;;
+;;;; Syntax
+;;;
+
+
+(define-macro (defmac)
+  x)
+
+
+@todo
+(special-form (specform walker resume declaration environment form-src)
+  x)
+
+
+@todo
+(define-walker-declaration ()
+  x)
+
+
+(macro (mac . rest)
+  x)
+
+
+(syntax syn
+  (lambda (form-src usage-environment macro-environment)
+    x))
+
+
+;;;
+;;;; Definition
+;;;
+
+
+(native nat)
+
+
+(define (def)
+  (define (i)
+    x)
+  y)
+
+
+(definition (defin)
+  x)
+
+
+;;;
+;;;; Reader
+;;;
+
+
+(define (literals)
+  '(2
+    2.3
+    3e10
+    +2
+    -3
+    5L
+    +inf.0
+    +nan.0
+    1+2.3i
+    #b1101
+    #o377
+    #d599
+    #x0A
+    #xF+Fi
+    #e#xF
+    #i2
+    #f
+    #t
+    #\a
+    #\ 
+    #\x3F
+    #\newline
+    #!key
+    #&123
+    #(a b c)
+    #f64(2. 3.14159)
+    (a b c)
+    a
+    | a;b |
+    :a
+    a:
+    "a"
+    #"a"#
+    #/C/ int a; //#
+    {Point 2 3}))
+
+
+(define (comments)
+  x ;; a
+  #; a x
+  @comment a x
+  #|a
+  a|# x)
+
+
+(define (functional-syntax)
+  x
+  (x y)
+  (((x) y) z))
+
+
+(define (specifier-syntax a <fx>)
+  (let ((b <fx> x))
+    y))
+
+
+;;;
+;;;; Syntaxes
+;;;
+
+
+(define (binding)
+  (let ((a x))
+    (let* ((a x))
+      (letrec ((a x))
+        (receive (a) x
+          y))))
+  (parameterize ((x y))
+    z)
+  (with ((a x))
+    x)
+  (bind (a) x
+    (bind-optionals ((a x)) y
+      (bind-keywords ((a x)) y
+        z))))
+
+
+(define (functional)
+  (lambda (a)
+    x)
+  (lambda (a)
+    x))
+
+
+(define (quotation)
+  'a
+  (quote a)
+  `(a ,x)
+  `(a ,@y)
+  (quasiquote (a (unquote x)))
+  (quasiquote (a (unquote-splicing y))))
+
+
+(define (logical)
+  (and x)
+  (or x))
+
+
+(define (conditional)
+  (if x
+      y
+    z)
+  (when x
+    y)
+  (unless x
+    y)
+  (cond (x y)
+        (else z))
+  (case x
+    ((a) y)
+    (else z))
+  (ecase x
+    ((y) z)
+    (else v))
+  (typecase x
+    ((y) z)
+    (else v)))
+
+
+(define (control)
+  (begin
+    x)
+  (prog1 x
+    y)
+  (catch x
+    y)
+  (unwind-protect
+      x
+    y)
+  (delay x)
+  (do ((a x))
+      (y z)
+    v)
+  (while x
+    y))
+
+
+@wait
+(define (assertion)
+  (assert x)
+  @todo
+  (assert-type x y)
+  @todo
+  (error-occurred? x))
+
+
+(define (iteration)
+  (loop (for a in x remainder b)
+        (for a in-vector x)
+        (for a in-sequence x)
+        (for (a b) in-properties x)
+        (for a from x to y by z)
+        (for a from x below y by z)
+        (for a from x downto y by z)
+        (for a first x then y)
+        (for a = x)
+        (with a = x)
+        (repeat x)
+        (when x y z)
+        (unless x y z)
+        (do x y z))
+  (loop (sum x))
+  (loop (collect x))
+  (loop (some x))
+  (loop (every x))
+  (loop (return x))
+  (loop (finally x y z)))
+
+
+(define (assignment)
+  (set! x 1)
+  (increase! x 2)
+  (decrease! x 3)
+  (let ((a 0))
+    (set! a x)
+    (increase! a x)
+    (decrease! a x)))
+
+
+(define (other)
+  (tie "{x}")
+  (time x))
+
+
+;;;
+;;;; Parameters
+;;;
+
+
+(definition (optionals a (b x))
+  a)
+
+
+(definition (keywords a (b: b x))
+  a)
+
+
+;;;
+;;;; Types
+;;;
+
+
+@need-to-fix-conflicts
+(specialize inline (= s1 <symbol> s2 <symbol>) <bool>
+  (eq? s1 s2))
+
+
+@todo
+(define (t)
+  (cast x y))
+
+
+;;;
+;;;; Foreign
+;;;
+
+
+(c-constant cconst
+  x)
+
+
+(c-enumeration cenum
+  (AA #x01)
+  (BB #x02))
+
+
+@needs-to-be-compiled
+(c-include "<stdlib.h>")
+
+
+@needs-to-be-compiled
+(c-initialize sample #/C/
+N = 2;
+//#)
+
+
+@needs-to-be-compiled
+(c-type cbool (native bool))
+@needs-to-be-compiled
+(c-type cuint (native unsigned-int))
+
+
+@needs-to-be-compiled
+(c-structure cstruct
+  (cuint a))
+
+
+@needs-to-be-compiled
+(c-external (cext) cbool "JzE")
+
+
+@needs-to-be-compiled
+(c-external (cfunc cuint) cbool
+  "___return(WindowFromPoint(*___arg1));")
+
+
+@needs-to-be-compiled
+(c-definition (cdef a b) (cbool cuint) cuint "someproc" "static"
+  (x a b))
+
+
+@needs-to-be-compiled
+(c-declare sample #/C/
+...some c code...
+//#)
+
+
+@needs-to-be-compiled
+(c-named-declare name
+  #/C/
+    ...some c code...
+//#)
+
+
+;;;
+;;;; Remoting
+;;;
+
+
+(remotable-stub S
+  
+  
+  (method public call value (get-value self))
+  (method public call (call self a))
+  (method public send (send self a))
+  (method public post (post self a)))
+
+
+;;;
+;;;; Runtime
+;;;
+
+
+(define (runtime-errors)
+  (let ((obj (new Object)))
+    (x obj)))
+
+
+;;;
+;;;; Interface
+;;;
+
+
+(interface I
+  
+  
+  (method public virtual abstract (i self)))
+
+
+;;;
+;;;; Class
+;;;
+
+
+(class A extends Object
+  
+  
+  (method override (initialize self)
+    (nextmethod self)
+    x)
+  
+  
+  (method (j self)
+    x)
+  
+  
+  (method virtual (virt self a)
+    x))
+
+
+(class B extends A implements I
+  
+  
+  (method meta (cls self)
+    x)
+  
+  
+  (slot private slt initialize x)
+  
+  
+  (define def
+    x)
+  
+  
+  (definition defin
+    x)
+  
+  
+  (method override (initialize self)
+    (nextmethod self)
+    y)
+  
+  
+  @todo
+  (method public inline (inl self)
+    x)
+  
+  
+  (method chained (chain self)
+    x)
+  
+  
+  (method synchronized (sync self)
+    x)
+  
+  
+  (method override (i self)
+    x)
+  
+  
+  (method override (virt self a)
+    (nextmethod self x)
+    y)
+  
+  
+  (method (object-syntax self)
+    self
+    (x y)))
+
+
+;;;
+;;;; Component
+;;;
+
+
+(class C extends Component
+  
+  
+  (property protected p initialize x accessors generate)
+  
+  
+  (form
+    (<install> p: a)))
+
+
+(class D extends C
+  
+  
+  (property protected q initialize x accessors generate)
+  
+  
+  (form
+    (<install> p: b q: c)))
+
+
+(class E extends Component
+  
+  
+  (property protected r initialize x accessors generate)
+  
+  
+  (form
+    (<install>       r: 1
+      (<C>           p: 2)
+      (<C>   name: c p: 3
+        (<D> name: d q: 5)))))
+
+
+;; component inheritance
+(class F extends E
+  
+  
+  (form
+    (<install>         r: 2
+      (<!>     name: c p: 4
+        (<!>   name: d q: 6
+          (<D>         p: 7))))))
+
+
+;; component composition
+(class G extends Component
+  
+  
+  (form
+    (<install>
+      (<E>               r: 3
+        (<!>     name: c p: 4
+          (<!>   name: d q: 6
+            (<D>         p: 7)))))))
+
+
+;;;
+;;;; Generic
+;;;
+
+
+(class K extends Object)
+(class L extends K)
+
+
+(generic (g (<K> k) a))
+
+(specific (g (<K> k) a)
+  x)
+
+(specific (g (<L> l) a)
+  x)
+
+
+(generic (h (<K> k) a)
+  x)
+
+(specific (h (<L> l) a)
+  x))
+```
