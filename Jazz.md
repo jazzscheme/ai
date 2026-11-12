@@ -1,20 +1,24 @@
 # Jazz guidelines
 
-Prefer functional programming when state doesn't need to be changed and only use classes when needed
+Prefer functional programming when state doesn't need to be changed and only use classes when needed.
 
 ## Gambit
 
-Jazz is built on top of Gambit Scheme and can use all of Gambit's primitives
+Jazz is built on top of Gambit Scheme v4.8.9 and can use all of Gambit's primitives.
+
+Everything documented in the Gambit v4.8.9 manual is available natively inside JazzScheme.
+
+Link: https://gambitscheme.org/4.8.9/manual  <- Foundational runtime baseline
 
 Gambit (declare) is baked into the jazz language and not needed
 
 ## Comments
 
-Do not add comments to code. The core design philosophy is that the code should be so clear as to be clearer than any documentation
+Do not add comments to code. The core design philosophy is that the code should be so clear as to be clearer than any documentation.
 
-Section ;;;; comments are fine
+A module overview comment at the top is fine.
 
-A module overview comment at the top is also fine
+Section ;;;; comments are also fine
 
 ## Method Invocation and Field Access (No Dot-Notation)
 
